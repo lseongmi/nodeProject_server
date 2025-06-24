@@ -2,11 +2,6 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-function validationNickName(nickname) {
-    const regex = /^[a-zA-Z0-9]{2,10}$/;
-    return regex.test(nickname);
-}
-
 function validationEmail(email) {
     const regex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/; //이메일 형식인지
     return regex.test(email);
@@ -24,15 +19,12 @@ exports.login = async(req, res) => {
     if(!email || !validationEmail(email)) {
         return res.status(400).json({message : "유효하지않은 이메일 입니다"});
     }
-    if(!password || validationPassword(password)) {
-        return res.status(400).json({message : "유효하지 않은 비밀번호 입니다"})
-    }
 
     try {
         //해당 email을 가진 사용자 조회
         const user = await User.findOne({where : {email}});
 
-        if(!Useremail) {
+        if(!user) {
             return res.status(400).json({message : "유효하지 않은 이메일입니다"});
         }
 
@@ -60,16 +52,13 @@ exports.login = async(req, res) => {
 }
 
 exports.join = async(req, res) => {
-    const {nickname, pass, email} = req.body;
+    const {nickname, password, email} = req.body;
 
      // 유효성 검사
-     if (!nickname || nickname.length < 2 || nickname.length > 20) {
-        return res.status(400).json({ message: '이름은 2~20자여야 합니다.' });
+     if (!nickname || nickname.length < 2 || nickname.length > 10) {
+        return res.status(400).json({ message: '이름은 2~10자여야 합니다.' });
     }
-    if (!pass || !validatePass(pass)) {
-        return res.status(400).json({ message: '유효하지 않은 비밀번호입니다' });
-    }
-    if (!email || !validateEmail(email)) {
+    if (!email || !validationEmail(email)) {
         return res.status(400).json({ message: '유효하지 않은 이메일입니다' });
     }
 
@@ -82,12 +71,12 @@ exports.join = async(req, res) => {
         }
 
         // 비밀번호 해싱
-        const hashedPass = await bcrypt.hash(pass, 10);
+        const hashedPass = await bcrypt.hash(password, 10);
 
         // DB에 저장
         await User.create({
             nickname,
-            pass: hashedPass,
+            password: hashedPass,
             email
         });
 

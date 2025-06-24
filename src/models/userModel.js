@@ -12,7 +12,7 @@ const User = sequelize.define('User', {
         allowNull: false
     },
     password: {
-        type : DataTypes.STRING(10),
+        type : DataTypes.STRING(100),
         allowNull : false
     },
     email: {
@@ -23,7 +23,7 @@ const User = sequelize.define('User', {
 }, {
     timestamps: true,
     createdAt: 'created_at',
-    updateAt : false,
+    updatedAt : false,
     tableName : 'users'
 });
 
