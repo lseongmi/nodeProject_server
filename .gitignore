@@ -1,0 +1,33 @@
+# Node modules
+node_modules/
+
+# 환경 변수 파일
+.env
+config/.env
+
+# 로그 파일
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 운영 시스템 파일
+.DS_Store
+Thumbs.db
+
+# Sequelize CLI 관련
+*.sqlite
+*.sqlite3
+*.log
+
+# IDE 관련
+.vscode/
+.idea/
+
+# OS 파일
+*.swp
+*.swo
+
+# 빌드 결과물 (필요한 경우)
+dist/
+build/
